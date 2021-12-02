@@ -1,0 +1,175 @@
+openapi: 3.0.0
+info:
+  title: Estadisticas
+  description: Estadisticas
+  contact:
+    email: mjimeneznso@alumnos.unex.es
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: "1.0.0"
+servers:
+- url: https://virtserver.swaggerhub.com/UEX-IST-G1/Estadisticas/v1.0.0
+  description: Estadísticas
+tags:
+- name: principal
+  description: principal
+paths:
+  /informe/{idUsuario}:
+    get:
+      tags:
+      - principal
+      summary: "obtenemos, para un usuario los datos del informe"
+      description: Para cada usuario recuperamos la información de los informes
+      operationId: getInforme
+      parameters:
+      - name: idUsuario
+        in: path
+        description: Id del Usuario
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          example: 1
+      responses:
+        "200":
+          description: datos del informe encontrados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatosInforme'
+                x-content-type: application/json
+        "400":
+          description: "entrada incorrecta, object incorrecto"
+        "404":
+          description: el objeto no existe
+      x-swagger-router-controller: Principal
+  /estadistica/{idUsuario}:
+    get:
+      tags:
+      - principal
+      summary: "obtenemos, para un usuario los datos de estadísticas"
+      description: Para cada usuario recuperamos la información de las estadísticas
+      operationId: getEstadistica
+      parameters:
+      - name: idUsuario
+        in: path
+        description: Id del Usuario
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          example: 1
+      responses:
+        "200":
+          description: datos de estadística encontrados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatosEstadistica'
+                x-content-type: application/json
+        "400":
+          description: "entrada incorrecta, object incorrecto"
+        "404":
+          description: el objeto no existe
+      x-swagger-router-controller: Principal
+components:
+  schemas:
+    DatosInforme:
+      required:
+      - datoMediaPresion
+      - datosMediaFrecuencia
+      - datosMediaOxigeno
+      - datosMediaPosicion
+      - datosMediaTemperatura
+      - idUsuario
+      - mes
+      type: object
+      properties:
+        idUsuario:
+          type: number
+          example: 1
+        datoMediaFrecuencia:
+          type: number
+          example: 75
+        datoMediaOxigeno:
+          type: number
+          example: 98
+        datoMediaPosicion:
+          type: number
+          example: 0
+        datoMediaPresion:
+          type: number
+          example: 2000
+        mes:
+          type: string
+          example: Los datos indicados en el informe pertenecen al mes de Diciembre
+      description: Registro con los datos de todos los sensores
+      example:
+        datoMediaOxigeno: 98
+        datoMediaFrecuencia: 75
+        datoMediaPresion: 2000
+        idUsuario: 1
+        datoMediaPosicion: 0
+        mes: Los datos indicados en el informe pertenecen al mes de Diciembre
+    DatosEstadistica:
+      required:
+      - datoEstadisticaPresion
+      - datosEstadisticaFrecuencia
+      - datosEstadisticaOxigeno
+      - datosEstadisticaPosicion
+      - datosEstadisticaTemperatura
+      - idUsuario
+      - mes
+      - resultadoMLSalud
+      type: object
+      properties:
+        idUsuario:
+          type: number
+          example: 1
+        datoEstadisticaFrecuencia:
+          type: number
+          example: 75
+        datoEstadisticaOxigeno:
+          type: number
+          example: 98
+        datoEstadisticaPosicion:
+          type: number
+          example: 0
+        datoEstadisticaPresion:
+          type: number
+          example: 2000
+        resultadoMLSalud:
+          type: string
+          example: "Realizado el estudio de los datos obtenidos por los sensores este\
+            \ mes, se concluye que si se continúa con esta tendencia, el paciente\
+            \ tiene un 70% de posibilidades de sufrir un infarto en menos de 6 meses."
+        mes:
+          type: string
+          example: Los datos estadísticos indicados pertenecen al mes de Diciembre
+      description: Registro con los datos de estadísticas recogidos de todos los sensores
+      example:
+        datoEstadisticaPosicion: 0
+        datoEstadisticaPresion: 2000
+        resultadoMLSalud: "Realizado el estudio de los datos obtenidos por los sensores\
+          \ este mes, se concluye que si se continúa con esta tendencia, el paciente\
+          \ tiene un 70% de posibilidades de sufrir un infarto en menos de 6 meses."
+        datoEstadisticaFrecuencia: 75
+        datoEstadisticaOxigeno: 98
+        idUsuario: 1
+        mes: Los datos estadísticos indicados pertenecen al mes de Diciembre
+  responses:
+    "404NotFound":
+      description: Not found response
+      content:
+        text/plain:
+          schema:
+            title: Endpoint not found
+            type: string
+            example: Not found
